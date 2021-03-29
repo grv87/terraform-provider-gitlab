@@ -19,6 +19,7 @@ resource "gitlab_project_level_mr_approvals" "foo" {
   disable_overriding_approvers_per_merge_request = false
   merge_requests_author_approval                 = false
   merge_requests_disable_committers_approval     = true
+  require_password_to_approve                    = true
 }
 ```
 
@@ -37,6 +38,8 @@ the approval rules for all new merge requests will be determined by the default 
 also need to be included in the approvers list in order to be able to approve their merge request. Default is `false`.
 
 * `merge_requests_disable_committers_approval` - (Optional) Set to `true` if you want to prevent approval of merge requests by merge request committers. Default is `false`.
+
+* `require_password_to_approve` - (Optional) Set to `true` if you want to require authentification when approving a merge request. Default is `false`.
 
 ## Importing approval configuration
 

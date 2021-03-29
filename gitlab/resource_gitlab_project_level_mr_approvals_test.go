@@ -30,6 +30,7 @@ func TestAccGitlabProjectLevelMRApprovals_basic(t *testing.T) {
 						disableOverridingApproversPerMergeRequest: true,
 						mergeRequestsAuthorApproval:               true,
 						mergeRequestsDisableCommittersApproval:    true,
+						requirePasswordToApprove:                  true,
 					}),
 				),
 			},
@@ -43,6 +44,7 @@ func TestAccGitlabProjectLevelMRApprovals_basic(t *testing.T) {
 						disableOverridingApproversPerMergeRequest: false,
 						mergeRequestsAuthorApproval:               false,
 						mergeRequestsDisableCommittersApproval:    false,
+						requirePasswordToApprove:                  false,
 					}),
 				),
 			},
@@ -56,6 +58,7 @@ func TestAccGitlabProjectLevelMRApprovals_basic(t *testing.T) {
 						disableOverridingApproversPerMergeRequest: true,
 						mergeRequestsAuthorApproval:               true,
 						mergeRequestsDisableCommittersApproval:    true,
+						requirePasswordToApprove:                  true,
 					}),
 				),
 			},
@@ -91,6 +94,7 @@ type testAccGitlabProjectLevelMRApprovalsExpectedAttributes struct {
 	disableOverridingApproversPerMergeRequest bool
 	mergeRequestsAuthorApproval               bool
 	mergeRequestsDisableCommittersApproval    bool
+	requirePasswordToApprove                  bool
 }
 
 func testAccCheckGitlabProjectLevelMRApprovalsAttributes(projectApprovals *gitlab.ProjectApprovals, want *testAccGitlabProjectLevelMRApprovalsExpectedAttributes) resource.TestCheckFunc {
@@ -106,6 +110,9 @@ func testAccCheckGitlabProjectLevelMRApprovalsAttributes(projectApprovals *gitla
 		}
 		if projectApprovals.MergeRequestsDisableCommittersApproval != want.mergeRequestsDisableCommittersApproval {
 			return fmt.Errorf("got merge_requests_disable_committers_approval %t; want %t", projectApprovals.MergeRequestsDisableCommittersApproval, want.mergeRequestsDisableCommittersApproval)
+		}
+		if projectApprovals.RequirePasswordToApprove != want.requirePasswordToApprove {
+			return fmt.Errorf("got require_password_to_approve %t; want %t", projectApprovals.RequirePasswordToApprove, want.requirePasswordToApprove)
 		}
 		return nil
 	}
@@ -172,6 +179,7 @@ resource "gitlab_project_level_mr_approvals" "foo" {
 	disable_overriding_approvers_per_merge_request = true
 	merge_requests_author_approval                 = true
 	merge_requests_disable_committers_approval     = true
+	require_password_to_approve                    = true
 }
 	`, rInt)
 }
@@ -190,6 +198,7 @@ resource "gitlab_project_level_mr_approvals" "foo" {
 	disable_overriding_approvers_per_merge_request = false
 	merge_requests_author_approval                 = false
 	merge_requests_disable_committers_approval     = false
+	require_password_to_approve                    = false
 }
 	`, rInt)
 }
