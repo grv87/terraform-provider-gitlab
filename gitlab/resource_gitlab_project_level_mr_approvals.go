@@ -40,6 +40,10 @@ func resourceGitlabProjectLevelMRApprovals() *schema.Resource {
 				Type:     schema.TypeBool,
 				Optional: true,
 			},
+			"require_password_to_approve": {
+				Type:     schema.TypeBool,
+				Optional: true,
+			},
 		},
 	}
 }
@@ -54,6 +58,7 @@ func resourceGitlabProjectLevelMRApprovalsCreate(d *schema.ResourceData, meta in
 		DisableOverridingApproversPerMergeRequest: gitlab.Bool(d.Get("disable_overriding_approvers_per_merge_request").(bool)),
 		MergeRequestsAuthorApproval:               gitlab.Bool(d.Get("merge_requests_author_approval").(bool)),
 		MergeRequestsDisableCommittersApproval:    gitlab.Bool(d.Get("merge_requests_disable_committers_approval").(bool)),
+		RequirePasswordToApprove:                  gitlab.Bool(d.Get("require_password_to_approve").(bool)),
 	}
 
 	log.Printf("[DEBUG] Creating new MR approval configuration for project %d:", projectId)
@@ -86,6 +91,7 @@ func resourceGitlabProjectLevelMRApprovalsRead(d *schema.ResourceData, meta inte
 	d.Set("disable_overriding_approvers_per_merge_request", approvalConfig.DisableOverridingApproversPerMergeRequest)
 	d.Set("merge_requests_author_approval", approvalConfig.MergeRequestsAuthorApproval)
 	d.Set("merge_requests_disable_committers_approval", approvalConfig.MergeRequestsDisableCommittersApproval)
+	d.Set("require_password_to_approve", approvalConfig.RequirePasswordToApprove)
 
 	return nil
 }
@@ -109,6 +115,9 @@ func resourceGitlabProjectLevelMRApprovalsUpdate(d *schema.ResourceData, meta in
 	if d.HasChange("merge_requests_disable_committers_approval") {
 		options.MergeRequestsDisableCommittersApproval = gitlab.Bool(d.Get("merge_requests_disable_committers_approval").(bool))
 	}
+	if d.HasChange("require_password_to_approve") {
+		options.RequirePasswordToApprove = gitlab.Bool(d.Get("require_password_to_approve").(bool))
+	}
 
 	if _, _, err := client.Projects.ChangeApprovalConfiguration(d.Id(), options); err != nil {
 		return fmt.Errorf("couldn't update approval configuration: %w", err)
@@ -126,6 +135,7 @@ func resourceGitlabProjectLevelMRApprovalsDelete(d *schema.ResourceData, meta in
 		DisableOverridingApproversPerMergeRequest: gitlab.Bool(false),
 		MergeRequestsAuthorApproval:               gitlab.Bool(false),
 		MergeRequestsDisableCommittersApproval:    gitlab.Bool(false),
+		RequirePasswordToApprove:                  gitlab.Bool(false),
 	}
 
 	log.Printf("[DEBUG] Resetting approval configuration for project %s:", projectId)
