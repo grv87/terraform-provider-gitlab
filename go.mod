@@ -8,3 +8,5 @@ require (
 	github.com/mitchellh/hashstructure v1.0.0
 	github.com/xanzy/go-gitlab v0.46.0
 )
+
+replace github.com/xanzy/go-gitlab => github.com/grv87/go-gitlab v0.48.1-0.20210329170430-df54128faeee
