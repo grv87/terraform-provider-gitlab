@@ -93,6 +93,7 @@ func Provider() *schema.Provider {
 			"gitlab_project_access_token":       resourceGitlabProjectAccessToken(),
 			"gitlab_project_cluster":            resourceGitlabProjectCluster(),
 			"gitlab_service_slack":              resourceGitlabServiceSlack(),
+			"gitlab_service_jenkins_ci":         resourceGitlabServiceJenkinsCI(),
 			"gitlab_service_jira":               resourceGitlabServiceJira(),
 			"gitlab_service_microsoft_teams":    resourceGitlabServiceMicrosoftTeams(),
 			"gitlab_service_github":             resourceGitlabServiceGithub(),
