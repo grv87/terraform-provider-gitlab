@@ -320,11 +320,11 @@ func projectAndBranchFromID(id string) (string, string, error) {
 	return project, branch, err
 }
 
-func constructProtectBranchPermissionOptions(permsMap map[string]interface{}) []*gitlab.ProtectBranchPermissionOptions {
-	var permissions []*gitlab.ProtectBranchPermissionOptions
+func constructProtectBranchPermissionOptions(permsMap map[string]interface{}) []*gitlab.BranchPermissionOptions {
+	var permissions []*gitlab.BranchPermissionOptions
 	for key, value := range permsMap {
 		for _, item := range value.([]interface{}) {
-			var permission gitlab.ProtectBranchPermissionOptions
+			var permission gitlab.BranchPermissionOptions
 			switch key {
 			case "user_id":
 				userID := item.(int)
